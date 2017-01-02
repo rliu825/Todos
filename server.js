@@ -2,6 +2,8 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 //var bodyParser = require('body-parser');
+
+//heroku or local
 var PORT = process.env.PORT || 3000;
 var todos=[];
 var todoNextId =1;
