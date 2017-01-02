@@ -8,6 +8,7 @@ var PORT = process.env.PORT || 3000;
 var todos=[];
 var todoNextId =1;
 
+/*
 var todos = [{
 	id: 1,
 	description: 'Meet mom for lunch',
@@ -21,7 +22,7 @@ var todos = [{
 	description: 'Go to market',
 	completed: true
 }]; 
-
+*/
 app.use(bodyParser.json());
 
 app.get('/', function (req, res) {
