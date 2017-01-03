@@ -1,8 +1,7 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
-//var bodyParser = require('body-parser');
-
+var _ = require('underscore');
 //heroku or local
 var PORT = process.env.PORT || 3000;
 var todos=[];
@@ -37,14 +36,15 @@ app.get('/todos', function (req, res) {
 app.get('/todos/:id', function (req, res) {
 	//need to change req.params.id(string) to an int
 	var todoId = parseInt(req.params.id,10);
+	var matchedTodo = _.findWhere(todos, {id: todoId});
 	//Iterate of todos array. Find the match.
-	var matchedTodo;
+	// var matchedTodo;
 
-	todos.forEach(function (todo) {
-		if (todoId === todo.id){
-			matchedTodo = todo;
-		}
-	});
+	// todos.forEach(function (todo) {
+	// 	if (todoId === todo.id){
+	// 		matchedTodo = todo;
+	// 	}
+	// });
 
 	if (matchedTodo) {
 		res.json(matchedTodo);
@@ -57,15 +57,19 @@ app.get('/todos/:id', function (req, res) {
 //POST /todos/
 
 app.post('/todos', function(req,res){
-	var body = req.body;
-	//add id field
+	//filter out other properties and only keep these two
+	var body = _.pick(req.body,'description','completed');
+	
+	if (!_.isBoolean(body.completed) || !_.isString(body.description) || body.description.trim().length === 0) {
+		return res.status(400).send();
+	}
+
+
+	//set body.description to be trimmed value (trim returns new string instead of editing current string)
+	body.description = body.description.trim().replace(/\s+/g, " ");;
 	body.id = todoNextId++;
-	body.description = 'Squat';
 
-
-	//push body into array todos
 	todos.push(body);
-	console.log('description:' + body.description);
 
 	res.json(body);
 });
