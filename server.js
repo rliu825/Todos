@@ -30,6 +30,19 @@ app.get('/', function (req, res) {
 
 //GET /todos
 app.get('/todos', function (req, res) {
+	var queryParams =req.query;
+	var filteredTodos = todos;
+
+	//if has property && completed ==='true'
+	if (queryParams.hasOwnProperty('completed') && queryParams.completed ==='true'){
+		filteredTodos = _.where(filteredTodos, {completed: true});
+	}else if (queryParams.hasOwnProperty('completed') && queryParams.completed ==='false'){
+		filteredTodos = _.where(filteredTodos, {completed: false});
+	}
+	//filtertodos = .where(filtertodos,?)
+	//else if has prop && completed is 'false' 
+	res.json(filteredTodos);
+	
 	res.json(todos);
 });
 //GET /todos/:id
