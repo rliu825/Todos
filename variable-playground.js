@@ -18,7 +18,7 @@
 // console.log(person);
 
 //Array example
-
+/*
 var arr = [15, 30];
 
 function addValueinArray (arr,num){
@@ -29,3 +29,8 @@ function addValueinArray (arr,num){
 
 addValueinArray(arr,60);
 console.log(arr);
+*/
+ ///How to use indexOf 
+var str = "you are smart";
+console.log(str.indexOf('mart'));
+
