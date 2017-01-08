@@ -2,26 +2,14 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var _ = require('underscore');
+
+var db = require('./db.js');
+
 //heroku or local
 var PORT = process.env.PORT || 3000;
 var todos = [];
 var todoNextId = 1;
 
-/*
-var todos = [{
-	id: 1,
-	description: 'Meet mom for lunch',
-	completed: false
-}, {
-	id: 2,
-	description: 'Go to gym',
-	completed: false
-}, {
-	id: 3,
-	description: 'Go to market',
-	completed: true
-}]; 
-*/
 app.use(bodyParser.json());
 
 app.get('/', function(req, res) {
@@ -86,7 +74,14 @@ app.get('/todos/:id', function(req, res) {
 app.post('/todos', function(req, res) {
 	//filter out other properties and only keep these two
 	var body = _.pick(req.body, 'description', 'completed');
+	//call create on db.todo
+	db.todo.create(body).then(function(todo) {
+		res.json(todo.toJSON());
+	}, function (e){
+		res.status(400).json(e);
+	});
 
+	/*
 	if (!_.isBoolean(body.completed) || !_.isString(body.description) || body.description.trim().length === 0) {
 		return res.status(400).send();
 	}
@@ -99,6 +94,7 @@ app.post('/todos', function(req, res) {
 	todos.push(body);
 
 	res.json(body);
+	*/
 });
 
 
@@ -116,7 +112,6 @@ app.delete('/todos/:id', function(req, res) {
 		todos = _.without(todos, matchedTodo);
 		res.json(matchedTodo);
 	}
-
 })
 
 //PUT /todos/:id
@@ -153,7 +148,8 @@ app.put('/todos/:id', function(req, res) {
 
 
 
-
-app.listen(PORT, function() {
-	console.log('Express listening on port ' + PORT + '!');
-});
+db.sequelize.sync().then(function() {
+	app.listen(PORT, function() {
+		console.log('Express listening on port ' + PORT + '!');
+	});
+})

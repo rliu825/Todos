@@ -5,12 +5,12 @@ var sequelize = new Sequelize(undefined, undefined, undefined, {
 });
 
 
-var Todo =sequelize.define('todo', {
+var Todo = sequelize.define('todo', {
 	description: {
 		type: Sequelize.STRING,
 		allowNull: false,
-		validate:{ 
-			len: [1,250]
+		validate: {
+			len: [1, 250]
 		}
 	},
 	completed: {
@@ -21,15 +21,14 @@ var Todo =sequelize.define('todo', {
 });
 //force true will drop db and refresh
 //sequelize.sync({force: true}).then(function () {
-sequelize.sync().then( function () {
+sequelize.sync().then(function() {
 	console.log('Everything is synced');
 
-	Todo.findById(3).then(function(todo){
+	Todo.findById(3).then(function(todo) {
 		if (todo) {
 			console.log(todo.toJSON());
-		}
-		else{
-			console.log ('todo not found!');
+		} else {
+			console.log('todo not found!');
 		}
 	});
 });

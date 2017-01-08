@@ -9,7 +9,7 @@
 // 	// 	name: 'Ray',
 // 	// 	age: 24
 // 	// };
-	
+
 // 	//right version
 // 	obj.age = 24;
 // }
@@ -30,7 +30,6 @@ function addValueinArray (arr,num){
 addValueinArray(arr,60);
 console.log(arr);
 */
- ///How to use indexOf 
+//How to use indexOf 
 var str = "you are smart";
 console.log(str.indexOf('mart'));
-
