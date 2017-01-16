@@ -10,6 +10,11 @@ var PORT = process.env.PORT || 3000;
 var todos = [];
 var todoNextId = 1;
 
+
+
+app.set('view engine', 'ejs');
+
+
 app.use(bodyParser.json());
 
 app.get('/', function(req, res) {
